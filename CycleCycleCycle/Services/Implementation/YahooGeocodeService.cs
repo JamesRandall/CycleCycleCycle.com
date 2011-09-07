@@ -13,7 +13,7 @@ namespace CycleCycleCycle.Services.Implementation
     public class YahooGeocodeService : IGeocodeService
     {
         private const string ServiceUrl = @"http://where.yahooapis.com/geocode?q={0}&appid={1}";
-        private const string YahooAppId = @"7tSpa834";
+        private const string YahooAppId = @"";
 
         public Location Geocode(string searchString)
         {
