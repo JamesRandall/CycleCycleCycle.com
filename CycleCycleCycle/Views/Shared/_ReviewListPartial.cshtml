@@ -1,0 +1,30 @@
+﻿@using CycleCycleCycle.Models
+@model IEnumerable<CycleCycleCycle.Models.RouteReview>
+           
+<table class="plain">
+@foreach (RouteReview review in Model)
+{
+    <tbody>
+        <tr>
+            <td>Route</td>
+            <td>@Html.ActionLink(review.Route.Name, "Route", "Details", new { id = review.RouteID})</td>
+        </tr>
+        <tr>
+            <td>Rating</td>
+            <td>@Html.Rating(review.Rating)</td>
+        </tr>
+        <tr>
+            <td>Reviewed by</td>
+            <td>@review.Account.Username</td>
+        </tr>
+        @if (!String.IsNullOrEmpty(review.Review))
+        {
+            <tr>
+                <td>Comments</td>
+                <td>@review.Review</td>
+            </tr>     
+        }
+    </tbody>
+}
+</table>
+

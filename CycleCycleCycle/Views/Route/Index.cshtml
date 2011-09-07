@@ -1,0 +1,55 @@
+@model CycleCycleCycle.ViewModels.TopRoutes
+
+@{
+    ViewBag.Title = "Routes";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var recentlyUploadedTab = $("#recentlyUploadedTab");
+        var recentlyUploadedPage = $("#recentlyUploadedPage");
+        var highestRatedTab = $("#highestRatedTab");
+        var highestRatedPage = $("#highestRatedPage");
+
+        function activateTab(tab) {
+            if (tab === recentlyUploadedTab) {
+                recentlyUploadedTab.addClass("active");
+                recentlyUploadedPage.show();
+            }
+            else {
+                recentlyUploadedTab.removeClass("active");
+                recentlyUploadedPage.hide();
+            }
+
+            if (tab === highestRatedTab) {
+                highestRatedTab.addClass("active");
+                highestRatedPage.show();
+            }
+            else {
+                highestRatedTab.removeClass("active");
+                highestRatedPage.hide();
+            }
+        }
+
+        recentlyUploadedTab.click(function (event) {
+            activateTab(recentlyUploadedTab);
+            event.preventDefault();
+        });
+        highestRatedTab.click(function(event) {
+            activateTab(highestRatedTab);
+            event.preventDefault();
+        });
+    })
+</script>
+
+@Html.Partial("_FindRoutePartial")
+<ul class="tabs">
+    <li class="active" id="recentlyUploadedTab"><a href="#">Recently Uploaded</a></li>
+    <li id="highestRatedTab"><a href="#">Highest Rated</a></li>
+</ul>
+<div id="recentlyUploadedPage">
+    @Html.Partial("_RouteListPartial", Model.RecentlyUploaded)
+</div>
+<div id="highestRatedPage" style="display:none;">
+    @Html.Partial("_RouteListPartial", Model.HighestRated)
+</div>

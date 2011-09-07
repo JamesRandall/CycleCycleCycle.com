@@ -1,0 +1,291 @@
+@model CycleCycleCycle.Models.Route
+
+@{
+    ViewBag.Title = "Route - " + Model.Name;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.16.custom.min.js")" type="text/javascript"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var detailsTab = $("#detailsTab");
+        var mapTab = $("#mapTab");
+        var profileTab = $("#profileTab");
+        var profilePage = $("#profilePage");
+        var detailsPage = $("#detailsPage");
+        var mapPage = $("#mapPage");
+        var reviewsTab = $("#reviewTab");
+        var reviewsPage = $("#reviewPage");
+        var favouriteBtn = $("#favouriteBtn");
+        var unfavouriteBtn = $("#unfavouriteBtn");
+        var rodeItBtn = $("#rodeItBtn");
+        var rodeItDialog = $("#rodeItDialog");
+        var closeBtn = $("#closeRideDialog");
+        var cancelBtn = $("#cancelRideBtn");
+        var saveRideBtn = $("#saveRideBtn");
+        var hours = $("#hours");
+        var minutes = $("#minutes");
+        var seconds = $("#seconds");
+        var dateRiddenPicker = $("#dateRiddenPicker");
+        var mapLoaded = false;
+        
+        function activateTab(tab) {
+            if (tab === detailsTab) {
+                detailsTab.addClass("active");
+                detailsPage.show();
+            }
+            else {
+                detailsTab.removeClass("active");
+                detailsPage.hide();
+            }
+            
+            if (tab === mapTab) {
+                mapTab.addClass("active");
+                mapPage.show();
+                if (!mapLoaded) {
+                    google.maps.event.trigger(map, 'resize');
+                    map.setZoom(map.getZoom());
+                    map.setCenter(latLngCenter);
+                    mapLoaded = true;
+                }
+            }
+            else {
+                mapTab.removeClass("active");
+                mapPage.hide();
+            }
+            
+            if (tab === profileTab) {
+                profileTab.addClass("active");
+                profilePage.show();
+            }
+            else {
+                profileTab.removeClass("active");
+                profilePage.hide();
+            }
+            
+            if (tab === reviewsTab) {
+                reviewsTab.addClass("active");
+                reviewsPage.show();
+            }
+            else {
+                reviewsTab.removeClass("active");
+                reviewsPage.hide();
+            }
+        }
+
+        dateRiddenPicker.datepicker();
+
+        detailsTab.click(function (event) {
+            activateTab(detailsTab);
+            event.preventDefault();
+        });
+        mapTab.click(function (event) {
+            activateTab(mapTab);
+            event.preventDefault();
+        });
+        profileTab.click(function (event) {
+            activateTab(profileTab);
+            event.preventDefault();
+        });
+        reviewsTab.click(function(event) {
+            activateTab(reviewsTab);
+            event.preventDefault();
+        });
+        favouriteBtn.click(function(event) {
+            favouriteBtn.addClass("disabled");
+            $.post('@Url.Action("Favourite", new { id = Model.RouteID })', function(data) {
+                favouriteBtn.removeClass("disabled");
+                favouriteBtn.hide();
+                unfavouriteBtn.show();
+            });
+        });
+        unfavouriteBtn.click(function(event) {
+            unfavouriteBtn.addClass("disabled");
+            $.post('@Url.Action("Unfavourite", new { id = Model.RouteID })', function(data) {
+                unfavouriteBtn.removeClass("disabled");
+                unfavouriteBtn.hide();
+                favouriteBtn.show();
+            });
+        });
+        rodeItBtn.click(function(event) {
+            dateRiddenPicker.datepicker("setDate", new Date() );
+            hours.val("");
+            minutes.val("");
+            seconds.val("");
+            rodeItDialog.show();
+        });
+        closeBtn.click(function(event) {
+            rodeItDialog.hide();
+        });
+        cancelBtn.click(function(event) {
+            rodeItDialog.hide();
+        });
+        saveRideBtn.click(function(event) {
+            var url = "@Url.Action("Create", "Ride")";
+            var formData = $("#rodeItForm").serialize();
+            $.post(url, formData, function(data) {
+                rodeItDialog.hide();
+            });
+            $("#rodeItForm").hide();
+            $("#saving").show();
+        });
+        
+        var lat = @Model.RoutePoints.First().Latitude ;
+        var lon = @Model.RoutePoints.First().Longitude ;
+        var latLngCenter = new google.maps.LatLng(lat, lon);
+        var myOptions = {
+            zoom: 10,
+            center: latLngCenter,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        
+         var routeCoords = [
+             @{
+                 bool first = true;
+                 foreach (var rp in Model.RoutePoints)
+                 {
+                    if (!first)
+                    {
+                        @:,
+                    }
+                    @:new google.maps.LatLng(@rp.Latitude, @rp.Longitude)
+                    first = false;
+                 }
+             }
+          ];
+        
+        var routePath = new google.maps.Polyline({
+            path: routeCoords,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        routePath.setMap(map);
+    });
+</script>
+<div class="overlay" id="rodeItDialog" style="display:none;">
+    <div style="position: relative; top: 200px; left: auto; margin: 0 auto;" class="modal">
+        <div class="modal-header">
+            <h3>Ride Details</h3>
+            <a class="close" href="#" id="closeRideDialog">×</a>
+        </div>
+        <div class="modal-body">
+            <div id="saving" style="display:none; height: 75px; vertical-align: middle; text-align:center;">Saving...</div>
+            <form action="#" id="rodeItForm">
+                <input type="hidden" value="@Model.RouteID" name="routeID" />
+                <table class="plain">
+                    <tr>
+                        <td>Date Ridden</td>
+                        <td><input type="text" name="dateRidden" id="dateRiddenPicker" /></td>
+                    </tr>
+                    <tr>
+                        <td>Time Taken</td>
+                        <td><input type="text" name="hours" id="hours" class="time-input"/> h <input type="text" name="minutes" id="minutes" class="time-input"/> m <input type="text" name="seconds" id="seconds" class="time-input"/> s</td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="btn primary" href="#" id="saveRideBtn">Save</a>
+            <a class="btn secondary" href="#" id="cancelRideBtn">Cancel</a>
+        </div>
+    </div>
+</div>
+
+    <div>
+        @if (Request.IsAuthenticated)
+        {
+            <span style="position: relative; float: right; z-index: 99;">
+                @if (ViewBag.IsFavourited)
+                {
+                    <a href="#" class="btn small" id="unfavouriteBtn">Unfavourite</a>
+                    <a href="#" class="btn small" style="display: none;" id="favouriteBtn">Favourite</a>
+                }
+                else
+                {
+                    <a href="#" class="btn small" style="display:none;" id="unfavouriteBtn">Unfavourite</a>
+                    <a href="#" class="btn small" id="favouriteBtn">Favourite</a>    
+                }
+                <a href="#" class="btn small" id="rodeItBtn">Rode It!</a>
+            </span>
+        }
+        <ul class="tabs">
+            <li class="active" id="profileTab"><a href="#">Route Profile</a></li>
+            <li id="mapTab"><a href="#">Map</a></li>
+            <li id="detailsTab"><a href="#">Details</a></li>
+            <li id="reviewTab"><a href="#">Reviews</a></li>
+        </ul>
+    </div>
+
+    <div id="profilePage">
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.Name)</div>
+            <div class="span12">@Model.Name</div>
+        </div>
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.DateCreated)</div>
+            <div class="span12">@String.Format("{0:g}", Model.DateCreated)</div>
+        </div>
+        @if (Model.Account != null)
+        {
+            <div class="row">
+                <div class="span4">@Html.LabelFor(m => m.Account)</div>
+                <div class="span12">@Html.DisplayTextFor(_ => Model.Account).ToString()</div>
+            </div>
+        }
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.Distance)</div>
+            <div class="span12">@Html.LongDistance(Model.Distance)</div>
+        </div>
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.TotalAscent)</div>
+            <div class="span12">@Html.Distance(Model.TotalAscent)</div>
+        </div>
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.TotalDescent)</div>
+            <div class="span12">@Html.Distance(Model.TotalDescent)</div>
+        </div>
+        <div class="row">
+            <div class="span4">@Html.LabelFor(m => m.AverageRating)</div>
+            <div class="span12">
+            @if (Model.AverageRating.HasValue)
+            {
+                @Model.AverageRating.Value.ToString()
+            }
+            else
+            {
+                @Html.ActionLink("Be the first to review this route", "Create", "RouteReview", new { id = Model.RouteID }, null)
+            }
+            </div>
+        </div>
+        <div>
+            <img src="@Url.Action("HeightMapImage", new { id = Model.RouteID, width = 940, height = 200 })"/>
+        </div>
+    </div>
+
+    <div id="mapPage" style="display: none;">
+        <div id="map_canvas" style="width: 100%; height: 480px;"></div>
+    </div>
+
+    <div id="detailsPage" style="display: none;">
+        @Grid.CreateBrowser(Model.RouteID, "routeDetailsList", Url.Action("PointDetails"), Url.Action("Details"), new string[] { "TimeRecorded", "Elevation", "Latitude", "Longitude" }, new int[] { 400, 200, 200, 200 })
+    </div>
+
+    <div id="reviewPage" style="display:none;">
+        @Html.Partial("_ReviewListPartial", Model.RouteReviews)
+    </div>
+
+<div class="breaker"></div>
+
+<p>
+@if (ViewBag.IsOwner)
+{
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RouteID }) @:|
+}
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

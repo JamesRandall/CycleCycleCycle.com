@@ -1,0 +1,65 @@
+﻿@using System.Text
+@using System.Web.Mvc
+
+@helper CreateBrowser(int rootEntityId, string id, string dataAction, string editAction, string[] columns, int[] columnWidths, string caption = null, string defaultSortColumn = null) {
+    StringBuilder colNamesBuilder = new StringBuilder();
+    StringBuilder colModelBuilder = new StringBuilder();
+    colModelBuilder.AppendLine("[");
+    colNamesBuilder.Append("[");
+    for (int index = 0; index < columns.Length; index++)
+    {
+        colModelBuilder.AppendFormat("{{ name: '{0}', index: '{1}', width: {2} }}", columns[index], columns[index], columnWidths[index]);
+        colNamesBuilder.AppendFormat("'{0}'", columns[index]);
+        if (index == (columns.Length - 1))
+        {
+            colModelBuilder.Append("]");
+            colNamesBuilder.Append("]");
+        }
+        else
+        { 
+            colModelBuilder.AppendLine(",");
+            colNamesBuilder.Append(",");
+        }
+    }
+
+    if (defaultSortColumn == null) {
+        defaultSortColumn = columns[0];
+    }
+
+    System.Web.Mvc.HtmlHelper htmlHelper = ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;
+    IHtmlString colModel = htmlHelper.Raw(colModelBuilder.ToString());
+    IHtmlString colNames = htmlHelper.Raw(colNamesBuilder.ToString());
+    
+    <table id="@id"></table>
+    <div id="@(id+"Pager")"></div>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery("#@id").jqGrid({
+                url: '@dataAction',
+                datatype: "json",
+                colNames: @colNames,
+                colModel: @colModel,
+                pager: '#@(id+"Pager")',
+                rowNum: 50,
+                rowList: [10, 20, 30],
+                sortname: '@defaultSortColumn',
+                viewrecords: true,
+                sortorder: "asc",
+                
+                height: 400,
+                width: 900,
+                ondblClickRow: function (rowId, rowIndex, colIndex, e) {
+                    window.location.href = '@editAction/' + rowId;
+                },
+                serializeGridData: function (postData) {
+                    return $.extend({},postData,{ entityId: @rootEntityId });
+                }
+            });
+            jQuery("#@id").jqGrid('navGrid', '#@(id+"Pager")', { edit: false, add: false, del: false });
+            jQuery("#searchButton").click(function(e) {
+                jQuery("#@id").trigger("reloadGrid");
+                e.preventDefault();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,8 @@
+﻿@using(Html.BeginForm("Find", "Route")) {
+<div class="areaBlock">
+    <span>Find Route</span>
+    <span>@Html.TextBox("SearchText")</span>
+    <span><input type="submit" value="Search" class="btn primary" /></span>
+    <span style="float:right;">@Html.ActionLink("Upload Route", "Upload", "Route", null, new { Class = "btn"})</span>
+</div>
+}

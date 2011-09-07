@@ -1,0 +1,8 @@
+@model CycleCycleCycle.Models.Route
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="row">
+    @Html.LabelFor(model => model.Name) @Html.EditorFor(model => model.Name) @Html.ValidationMessageFor(model => model.Name)
+</div>
+<div class="breaker"></div>

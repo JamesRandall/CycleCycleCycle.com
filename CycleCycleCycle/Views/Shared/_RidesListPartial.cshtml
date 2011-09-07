@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CycleCycleCycle.Models.Ride>
+<table class="zebra-striped">
+        <tr>
+            <th>
+                Route
+            </th>
+            <th>
+                Distance
+            </th>
+            <th>
+                Date Ridden
+            </th>
+            <th>
+                Time Taken
+            </th>
+        </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+			    @Html.ActionLink(item.Route.Name, "Details", "Route", new { id = item.RouteID }, null)
+            </td>
+            <td>
+			    @Html.LongDistance(item.Route.Distance)
+            </td>
+            <td>
+			    @item.TimeOfRide.ToString()
+            </td>
+            <td>
+                @Html.TimeTaken(item.TimeTaken)
+            </td>
+        </tr>
+    }
+
+    </table>

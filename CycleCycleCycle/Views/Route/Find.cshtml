@@ -1,0 +1,39 @@
+﻿@model CycleCycleCycle.ViewModels.RouteSearch
+
+@{
+    ViewBag.Title = "Find";
+}
+
+@using(Html.BeginForm("Find", "Route")) {
+<div class="areaBlock">
+    <span>Find Route</span>
+    <span>@Html.EditorFor(m => m.SearchText)</span>
+    <span><input type="submit" value="Search" class="btn primary" /></span>
+</div>
+}
+@if (Model.Results != null)
+{
+    if (Model.Results.Count > 0)
+    {
+        <p>Results for @Model.SearchedLocation</p>
+        <table class="zebra-striped">
+            <tr>
+                <th>Name</th>
+                <th>Distance From Start</th>
+                <th>Created By</th>
+            </tr>
+            @foreach (var result in Model.Results)
+            {
+                <tr>
+                    <td>@Html.ActionLink(result.Name, "Details", new {id = result.RouteID})</td>
+                    <td>@Html.LongDistance(result.DistanceFromStart)</td>
+                    <td>@Html.Encode(result.CreatedBy)</td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>No results found near @Model.SearchedLocation</p>
+    }
+}

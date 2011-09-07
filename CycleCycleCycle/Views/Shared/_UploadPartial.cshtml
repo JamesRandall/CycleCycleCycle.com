@@ -1,0 +1,16 @@
+﻿@if (!ViewData.ModelState.IsValid) {
+    <div class="row">
+        <div class="span12 columns">
+            <div class="alert-message error">
+            <a class="close" href="#">&times;</a>
+            <p>@Html.ValidationSummary()</p>
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("Upload", "Route", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type='file' name='file' id='file' />
+    <input type="submit" value="submit" class="btn primary" />
+}

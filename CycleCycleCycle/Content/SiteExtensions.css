@@ -1,0 +1,62 @@
+﻿div.breaker
+{
+    min-height: 1em;
+}
+
+div.areaBlock 
+{
+    padding: 1em;
+    background-color: #f9f9f9;
+}
+
+div.areaBlock input[type="text"]
+{
+    font-size: 18px;
+    width: 200px;
+}
+
+div.areaBlock input[type="file"]
+{
+    min-width: 200px;
+    width: 200px;
+}
+
+div.areaBlock span:first-child
+{
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 10em;
+}
+img.rating
+{
+    
+}
+table.plain td,
+table.plain tr
+{
+    border: none;
+}
+table.plain tbody:nth-child(even)
+{
+    background-color: #f9f9f9;
+}
+div.overlay {
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+    height: 100%;
+     text-align:center;
+     z-index: 999;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.time-input {
+    width: 2em;
+}
+
+#ui-datepicker-div
+{
+    z-index: 9999999;
+}

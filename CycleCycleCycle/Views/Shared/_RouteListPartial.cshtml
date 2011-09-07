@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CycleCycleCycle.ViewModels.RouteSummary>
+
+<table class="zebra-striped">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>Average Rating</th>
+            <th>
+                Date Created
+            </th>
+            <th>
+                Created By
+            </th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+			    @Html.ActionLink(item.Name, "Details", "Route", new { id = item.RouteID}, null)
+            </td>
+            @if (item.Reviewed)
+            {
+                <td>
+                     @Html.Rating(item.AverageRating)
+                </td>
+            }
+            else
+            {
+                 <td>
+                     @Html.Rating(item.AverageRating) (@Html.ActionLink("review", "Create", "RouteReview", new { id = item.RouteID }, null))
+                 </td>  
+            }
+                
+            <td>
+			    @String.Format("{0:g}", item.DateCreated)
+            </td>
+            <td>
+			    @item.CreatedBy
+            </td>
+        </tr>
+    }
+
+    </table>

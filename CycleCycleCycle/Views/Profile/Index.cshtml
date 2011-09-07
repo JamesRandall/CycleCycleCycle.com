@@ -1,0 +1,120 @@
+﻿@model CycleCycleCycle.ViewModels.Profile
+
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var favouritesTab = $("#favouritesTab");
+        var favouritesPage = $("#favouritesPage");
+        var reviewsTab = $("#reviewsTab");
+        var reviewsPage = $("#reviewsPage");
+        var uploadsTab = $("#uploadsTab");
+        var uploadsPage = $("#uploadsPage");
+        var ridesTab = $("#ridesTab");
+        var ridesPage = $("#ridesPage");
+
+        function activateTab(tab) {
+            if (tab === favouritesTab) {
+                favouritesTab.addClass("active");
+                favouritesPage.show();
+            }
+            else {
+                favouritesTab.removeClass("active");
+                favouritesPage.hide();
+            }
+
+            if (tab === reviewsTab) {
+                reviewsTab.addClass("active");
+                reviewsPage.show();
+            }
+            else {
+                reviewsTab.removeClass("active");
+                reviewsPage.hide();
+            }
+
+            if (tab === uploadsTab) {
+                uploadsTab.addClass("active");
+                uploadsPage.show();
+            }
+            else {
+                uploadsTab.removeClass("active");
+                uploadsPage.hide();
+            }
+
+            if (tab == ridesTab) {
+                ridesTab.addClass("active");
+                ridesPage.show();
+            }
+            else {
+                ridesTab.removeClass("active");
+                ridesPage.hide();
+            }
+        }
+
+        favouritesTab.click(function (event) {
+            activateTab(favouritesTab);
+            event.preventDefault();
+        });
+        reviewsTab.click(function (event) {
+            activateTab(reviewsTab);
+            event.preventDefault();
+        });
+        uploadsTab.click(function (event) {
+            activateTab(uploadsTab);
+            event.preventDefault();
+        });
+        ridesTab.click(function(event) {
+            activateTab(ridesTab);
+            event.preventDefault();
+        });
+    })
+</script>
+<ul class="tabs">
+    <li class="active" id="favouritesTab"><a href="#">Your Favourites</a></li>
+    <li id="reviewsTab"><a href="#">Your Reviews</a></li>
+    <li id="uploadsTab"><a href="#">Your Uploads</a></li>
+    <li id="ridesTab"><a href="#">Your Rides</a></li>
+</ul>
+<div id="favouritesPage">
+    @if (Model.Favourites != null && Model.Favourites.Count() > 0)
+    {
+        @Html.Partial("_RouteListPartial", Model.Favourites)
+    }
+    else
+    {
+        <p>You've not yet marked any routes as favourites.</p>
+    }
+</div>
+<div id="reviewsPage" style="display:none;">
+    @if (Model.Reviews != null && Model.Reviews.Count() > 0)
+    {
+        @Html.Partial("_ReviewListPartial", Model.Reviews)
+    }
+    else
+    {
+        <p>You haven't yet reviewed any routes - reviewing and rating routes helps others select rides they'll enjoy so please consider
+            taking the time to review any routes you follow or upload yourself.</p>
+    }
+</div>
+<div id="uploadsPage" style="display:none;">
+    @if (Model.Uploads != null && Model.Uploads.Count() > 0)
+    {
+        @Html.Partial("_RouteListPartial", Model.Uploads)
+    }
+    else
+    {
+        <p>You haven't yet uploaded any routes - if you have a GPS that can record your routes please consider uploading them for others
+            to try.</p>
+    }
+</div>
+<div id="ridesPage" style="display: none;">
+    @if (Model.Rides != null && Model.Rides.Count() > 0)
+    {
+        @Html.Partial("_RidesListPartial", Model.Rides)
+    }
+    else
+    {
+        <p>You haven't yet ridden any routes.</p>
+    }
+</div>

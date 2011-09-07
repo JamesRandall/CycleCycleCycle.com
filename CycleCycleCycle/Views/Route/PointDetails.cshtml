@@ -1,0 +1,36 @@
+﻿@model IEnumerable<CycleCycleCycle.Models.RoutePoint>
+
+<table>
+    <tr>
+        <th>
+            Longitude
+        </th>
+        <th>
+            Latitude
+        </th>
+        <th>
+            Elevation
+        </th>
+        <th>
+            Time Recorded
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Longitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitude)
+        </td>
+        <td>
+            @Html.Distance(item.Elevation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeRecorded)
+        </td>
+    </tr>
+}
+
+</table>
