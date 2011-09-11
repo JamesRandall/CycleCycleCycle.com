@@ -38,6 +38,10 @@ namespace CycleCycleCycle.App_Start
             container.RegisterType<IRideService, RideService>();
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<IFavouriteService, FavouriteService>();
+            container.RegisterType<IRouteReviewService, RouteReviewService>();
+            container.RegisterType<IGeocodeService, YahooGeocodeService>();
+
+            // utilities
             container.RegisterType<IDistanceCalculator, HaversineDistanceCalculator>();
             container.RegisterType<IHeightMapImageBuilder, HeightMapImageBuilder>();
             container.RegisterType<IHeightMapImageCache, HeightMapImageCache>();
@@ -46,9 +50,6 @@ namespace CycleCycleCycle.App_Start
 
             // type mappers
             container.RegisterType<IRouteToRouteResultMapper, RouteToRouteResultMapper>();
-
-            // services
-            container.RegisterType<IGeocodeService, YahooGeocodeService>();
 
             container.RegisterControllers();
 

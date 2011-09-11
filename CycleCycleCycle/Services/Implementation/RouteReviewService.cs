@@ -33,8 +33,11 @@ namespace CycleCycleCycle.Services.Implementation
                 _routeReviewRepository.Insert(routeReview);
 
                 Route route = _routeRepository.Find(routeReview.RouteID);
-                route.AverageRating =
-                    _routeReviewRepository.All.Where(rv => rv.RouteID == routeReview.RouteID).Average(rv => rv.Rating);
+                List<int> ratings =
+                    _routeReviewRepository.All.Where(rv => rv.RouteID == routeReview.RouteID).Select(r => r.Rating).
+                        ToList();
+                ratings.Add(routeReview.Rating);
+                route.AverageRating = ratings.Average();
                 _routeRepository.Update(route);
                 _unitOfWork.Save();
 
