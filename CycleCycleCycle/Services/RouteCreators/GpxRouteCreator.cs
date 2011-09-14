@@ -47,7 +47,7 @@ namespace CycleCycleCycle.Services.RouteCreators
 
             Route newRoute = new Route { Name = name, DateCreated = DateTime.Now };
             List<RoutePoint> routePoints = new List<RoutePoint>();
-            var trackPoints = track.Element(ns + "trkseg").Elements(ns + "trkpt");
+            var trackPoints = track.Descendants(ns + "trkpt");
             foreach (XElement trackPoint in trackPoints)
             {
                 RoutePoint routePoint = new RoutePoint();
@@ -81,7 +81,7 @@ namespace CycleCycleCycle.Services.RouteCreators
 
             Route newRoute = new Route {Name = name, DateCreated = DateTime.Now};
             List<RoutePoint> routePoints = new List<RoutePoint>();
-            var trackPoints = track.Element(ns + "trkseg").Elements(ns + "trkpt");
+            var trackPoints = track.Descendants(ns + "trkpt");
             foreach (XElement trackPoint in trackPoints)
             {
                 RoutePoint routePoint = new RoutePoint();
