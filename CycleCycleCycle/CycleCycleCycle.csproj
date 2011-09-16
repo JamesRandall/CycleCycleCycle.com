@@ -104,6 +104,8 @@
     <Compile Include="Services\IRideService.cs" />
     <Compile Include="Services\IRouteReviewService.cs" />
     <Compile Include="Services\RouteCreators\RouteCreatorException.cs" />
+    <Compile Include="Services\RouteFileCreator\GpxRouteFileCreator.cs" />
+    <Compile Include="Services\RouteFileCreator\IRouteFileCreator.cs" />
     <Compile Include="Services\Utilities\ISortSecurity.cs" />
     <Compile Include="Services\Utilities\SortSecurity.cs" />
     <Compile Include="Utilities\HtmlHelperExtensions.cs" />

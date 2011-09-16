@@ -202,6 +202,11 @@ namespace CycleCycleCycle.Controllers
             _favouriteService.Unfavourite(Account.AccountID, id);
             return Json(true);
         }
+
+        public FileResult Download(int id)
+        {
+            return new FileStreamResult(_routeService.Download(id), "application/gpx");
+        }
     }
 }
 

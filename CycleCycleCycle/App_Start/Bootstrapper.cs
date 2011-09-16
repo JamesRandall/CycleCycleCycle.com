@@ -5,6 +5,7 @@ using CycleCycleCycle.Models.Repositories;
 using CycleCycleCycle.Services;
 using CycleCycleCycle.Services.Implementation;
 using CycleCycleCycle.Services.RouteCreators;
+using CycleCycleCycle.Services.RouteFileCreator;
 using CycleCycleCycle.Services.Utilities;
 using CycleCycleCycle.ViewModels.Mappers;
 using Microsoft.Practices.Unity;
@@ -46,6 +47,7 @@ namespace CycleCycleCycle.App_Start
             container.RegisterType<IHeightMapImageBuilder, HeightMapImageBuilder>();
             container.RegisterType<IHeightMapImageCache, HeightMapImageCache>();
             container.RegisterType<IRouteCreator, GpxRouteCreator>();
+            container.RegisterType<IRouteFileCreator, GpxRouteFileCreator>();
             container.RegisterType<ISortSecurity, SortSecurity>();
 
             // type mappers

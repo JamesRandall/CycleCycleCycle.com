@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Data.Objects.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Security;
+using System.Xml;
 using System.Xml.Linq;
 using CycleCycleCycle.Cacheing;
 using CycleCycleCycle.Models;
 using CycleCycleCycle.Models.Repositories;
 using CycleCycleCycle.Services.RouteCreators;
+using CycleCycleCycle.Services.RouteFileCreator;
 using CycleCycleCycle.Services.Utilities;
 using CycleCycleCycle.ViewModels;
 using CycleCycleCycle.ViewModels.Mappers;
@@ -25,6 +28,7 @@ namespace CycleCycleCycle.Services.Implementation
         private readonly IRouteToRouteResultMapper _routeToRouteResultMapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISortSecurity _sortSecurity;
+        private readonly IRouteFileCreator _routeFileCreator;
         private readonly IRepository<Route> _routeRepository;
         private readonly IRepository<Favourite> _favouriteRepository;
         private readonly IRepository<RoutePoint> _routePointRepository; 
@@ -35,7 +39,8 @@ namespace CycleCycleCycle.Services.Implementation
             IGeocodeService geocodeService,
             IRouteToRouteResultMapper routeToRouteResultMapper,
             IUnitOfWork unitOfWork,
-            ISortSecurity sortSecurity)
+            ISortSecurity sortSecurity,
+            IRouteFileCreator routeFileCreator)
         {
             _routeRepository = unitOfWork.GetRepository<Route>();
             _favouriteRepository = unitOfWork.GetRepository<Favourite>();
@@ -47,6 +52,7 @@ namespace CycleCycleCycle.Services.Implementation
             _routeToRouteResultMapper = routeToRouteResultMapper;
             _unitOfWork = unitOfWork;
             _sortSecurity = sortSecurity;
+            _routeFileCreator = routeFileCreator;
         }
 
         public Route CreateFromXDocument(XDocument routeDocument, int accountId)
@@ -224,6 +230,18 @@ namespace CycleCycleCycle.Services.Implementation
             _routeRepository.InsertOrUpdate(updatedRoute, (r) => r.RouteID);
             _unitOfWork.Save();
             return updatedRoute;
+        }
+
+        public Stream Download(int id)
+        {
+            Route route = _routeRepository.Find(id);
+            XDocument routeXml = _routeFileCreator.CreateRoute(route);
+            
+            MemoryStream ms = new MemoryStream();
+            XmlWriter writer = XmlWriter.Create(ms);
+            routeXml.WriteTo(writer);
+            ms.Position = 0;
+            return ms;
         }
     }
 }

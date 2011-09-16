@@ -196,22 +196,23 @@
 </div>
 
     <div>
-        @if (Request.IsAuthenticated)
-        {
-            <span style="position: relative; float: right; z-index: 99;">
-                @if (ViewBag.IsFavourited)
-                {
-                    <a href="#" class="btn small" id="unfavouriteBtn">Unfavourite</a>
-                    <a href="#" class="btn small" style="display: none;" id="favouriteBtn">Favourite</a>
-                }
-                else
-                {
-                    <a href="#" class="btn small" style="display:none;" id="unfavouriteBtn">Unfavourite</a>
-                    <a href="#" class="btn small" id="favouriteBtn">Favourite</a>    
-                }
-                <a href="#" class="btn small" id="rodeItBtn">Rode It!</a>
-            </span>
-        }
+        <span style="position: relative; float: right; z-index: 99;">
+            @if (Request.IsAuthenticated)
+            {
+                    if (ViewBag.IsFavourited)
+                    {
+                        <a href="#" class="btn small" id="unfavouriteBtn">Unfavourite</a>
+                        <a href="#" class="btn small" style="display: none;" id="favouriteBtn">Favourite</a>
+                    }
+                    else
+                    {
+                        <a href="#" class="btn small" style="display:none;" id="unfavouriteBtn">Unfavourite</a>
+                        <a href="#" class="btn small" id="favouriteBtn">Favourite</a>    
+                    }
+                    <a href="#" class="btn small" id="rodeItBtn">Rode It!</a>
+            }
+            @Html.ActionLink("GPX", "Download", new { id = Model.RouteID}, new { Class="btn small" })
+        </span>
         <ul class="tabs">
             <li class="active" id="profileTab"><a href="#">Route Profile</a></li>
             <li id="mapTab"><a href="#">Map</a></li>
