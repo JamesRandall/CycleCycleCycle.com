@@ -3,5 +3,7 @@
   <PropertyGroup>
     <DeploymentBuildOnly>True</DeploymentBuildOnly>
     <DeploymentIsExpanded>True</DeploymentIsExpanded>
+    <PackageProfile>Default</PackageProfile>
+    <PackageSolutionConfiguration>Release</PackageSolutionConfiguration>
   </PropertyGroup>
 </Project>

@@ -206,7 +206,7 @@ namespace CycleCycleCycle.Controllers
         public FileResult Download(int id)
         {
             string filename;
-            FileResult result = new FileStreamResult(_routeService.Download(1, out filename), "application/xml");
+            FileResult result = new FileStreamResult(_routeService.Download(id, out filename), "application/xml");
             result.FileDownloadName = filename;
             return result;
         }
