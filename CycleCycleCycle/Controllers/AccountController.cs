@@ -23,6 +23,11 @@ namespace CycleCycleCycle.Controllers
             return View();
         }
 
+        public ActionResult LogIn()
+        {
+            return View("LogOn");
+        }
+
         //
         // POST: /Account/LogOn
 

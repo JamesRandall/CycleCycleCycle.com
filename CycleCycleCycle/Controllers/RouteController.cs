@@ -205,7 +205,10 @@ namespace CycleCycleCycle.Controllers
 
         public FileResult Download(int id)
         {
-            return new FileStreamResult(_routeService.Download(id), "application/gpx");
+            string filename;
+            FileResult result = new FileStreamResult(_routeService.Download(1, out filename), "application/xml");
+            result.FileDownloadName = filename;
+            return result;
         }
     }
 }

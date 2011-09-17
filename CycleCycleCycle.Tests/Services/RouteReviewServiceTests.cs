@@ -125,12 +125,6 @@ namespace CycleCycleCycle.Tests.Services
                                                          AccountID = 1,
                                                          RouteID = 2,
                                                          Rating = 2
-                                                     },
-                                                     new RouteReview
-                                                     {
-                                                         AccountID = 1,
-                                                         RouteID = 2,
-                                                         Rating = 4
                                                      }
                                              };
             Route route = new Route { RouteID = 2 };

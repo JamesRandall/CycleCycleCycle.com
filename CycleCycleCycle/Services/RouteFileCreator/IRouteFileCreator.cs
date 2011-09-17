@@ -9,6 +9,6 @@ namespace CycleCycleCycle.Services.RouteFileCreator
 {
     public interface IRouteFileCreator
     {
-        XDocument CreateRoute(Route route);
+        XDocument CreateRoute(Route route, out string filename);
     }
 }

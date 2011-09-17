@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -196,6 +197,25 @@ namespace CycleCycleCycle.Tests.Controllers
         public void Test_Edit_PostSaves()
         {
             
+        }
+
+        [TestMethod]
+        public void Test_Download_ReturnsFileResult()
+        {
+            // Arrange
+            MemoryStream routeStream = new MemoryStream();
+            IAccountService accountService = MockRepository.GenerateStub<IAccountService>();
+            IRouteService routeService = MockRepository.GenerateStub<IRouteService>();
+            IFavouriteService favouriteService = MockRepository.GenerateStub<IFavouriteService>();
+            routeService.Stub(s => s.Download(Arg<int>.Is.Equal(1), out Arg<string>.Out("somefile.gpx").Dummy)).Return(routeStream);
+            RouteController controller = new RouteController(accountService, routeService, favouriteService);
+
+            // Act
+            FileStreamResult result = (FileStreamResult)controller.Download(1);
+
+            // Assert
+            Assert.IsNotNull(result.FileStream);
+            Assert.AreEqual("somefile.gpx", result.FileDownloadName);
         }
     }
 }

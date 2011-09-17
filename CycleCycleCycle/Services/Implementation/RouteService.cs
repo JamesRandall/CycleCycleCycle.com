@@ -232,14 +232,15 @@ namespace CycleCycleCycle.Services.Implementation
             return updatedRoute;
         }
 
-        public Stream Download(int id)
+        public Stream Download(int id, out string filename)
         {
             Route route = _routeRepository.Find(id);
-            XDocument routeXml = _routeFileCreator.CreateRoute(route);
+            XDocument routeXml = _routeFileCreator.CreateRoute(route, out filename);
             
             MemoryStream ms = new MemoryStream();
             XmlWriter writer = XmlWriter.Create(ms);
             routeXml.WriteTo(writer);
+            writer.Flush();
             ms.Position = 0;
             return ms;
         }

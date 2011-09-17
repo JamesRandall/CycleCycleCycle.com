@@ -14,7 +14,7 @@
 
 @Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("LogOn", "Account")) {
     <div>
         <fieldset>
             <legend>Account Information</legend>

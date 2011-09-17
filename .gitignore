@@ -5,8 +5,15 @@ _ReSharper*
 bin
 obj
 
+# User files
+*.user
+
 # mstest test results
 TestResults
 
 # suo
 *.suo
+
+# Upgrade files
+UpgradeLog.XML
+_UpgradeReport_Files

@@ -20,7 +20,6 @@ namespace CycleCycleCycle.Services.RouteCreators
 
         public Route CreateFromXDocument(XDocument routeDocument)
         {
-            XmlNamespaceManager namespaces = new XmlNamespaceManager(new NameTable());
             XNamespace ns = routeDocument.Root.GetDefaultNamespace();
             Route route = null;
             if (ns.NamespaceName.Equals(Gpx_1_0))
