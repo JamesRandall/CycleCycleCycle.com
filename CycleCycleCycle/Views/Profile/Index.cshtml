@@ -70,6 +70,19 @@
         });
     })
 </script>
+<div class="row">
+    <div class="span4">Total Distance Cycled</div>
+    <div class="span12">@Html.LongDistance(Model.TotalDistanceCycled)</div>
+</div>
+<div class="row">
+    <div class="span4">Total Ascent</div>
+    <div class="span12">@Html.Distance(Model.TotalAscent)</div>
+</div>
+<div class="row">
+    <div class="span4">Total Descent</div>
+    <div class="span12">@Html.Distance(Model.TotalDescent)</div>
+</div>
+<div class="breaker"></div>
 <ul class="tabs">
     <li class="active" id="favouritesTab"><a href="#">Your Favourites</a></li>
     <li id="reviewsTab"><a href="#">Your Reviews</a></li>

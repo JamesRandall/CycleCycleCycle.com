@@ -31,7 +31,10 @@ namespace CycleCycleCycle.Controllers
                                           .ThenBy(r => r.DateCreated).ToList().Select(r => _routeToRouteResultMapper.FromRoute(r, Account)),
                                       Reviews = Account.RouteReviews.OrderByDescending(r => r.DateCreated),
                                       Uploads = Account.Routes.OrderByDescending(r => r.DateCreated).ToList().Select(f => _routeToRouteResultMapper.FromRoute(f, Account)),
-                                      Rides = Account.Rides.OrderByDescending(r => r.Route.DateCreated).ToList()
+                                      Rides = Account.Rides.OrderByDescending(r => r.Route.DateCreated).ToList(),
+                                      TotalDistanceCycled = Account.Rides.Sum(r => r.Route.Distance),
+                                      TotalAscent = Account.Rides.Sum(r => r.Route.TotalAscent),
+                                      TotalDescent = Account.Rides.Sum(r => r.Route.TotalDescent)
                                   };
             return View(profile);
         }
