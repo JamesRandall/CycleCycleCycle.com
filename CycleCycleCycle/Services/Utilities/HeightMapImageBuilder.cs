@@ -61,8 +61,8 @@ namespace CycleCycleCycle.Services.Utilities
                     {
                         averageElevation = previousElevation;
                     }
-                    graphics.DrawLine(pen, (float)x, height, (float)x, height - (float)(averageElevation * metersPerPixel));
-                    Point point = new Point(x, (int)(height - (float)(averageElevation * metersPerPixel)));
+                    graphics.DrawLine(pen, (float)x, height, (float)x, height - (float)((averageElevation - minimumElevation) * metersPerPixel));
+                    Point point = new Point(x, (int)(height - (float)((averageElevation - minimumElevation) * metersPerPixel)));
                     
                     if (x >= 1)
                     {

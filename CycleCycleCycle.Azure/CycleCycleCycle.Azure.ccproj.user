@@ -1,9 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <DeploymentBuildOnly>True</DeploymentBuildOnly>
+    <DeploymentBuildOnly>False</DeploymentBuildOnly>
     <DeploymentIsExpanded>True</DeploymentIsExpanded>
     <PackageProfile>Default</PackageProfile>
     <PackageSolutionConfiguration>Release</PackageSolutionConfiguration>
+    <DeploymentAccountName>Accidental Fish Azure</DeploymentAccountName>
+    <DeploymentHostedService>cyclecyclecycle</DeploymentHostedService>
+    <DeploymentHostedServiceLabel>CycleCycleCycle Production</DeploymentHostedServiceLabel>
+    <DeploymentSlot>Staging</DeploymentSlot>
+    <DeploymentIncludeIntellitrace>False</DeploymentIncludeIntellitrace>
+    <DeploymentIncludeProfiling>False</DeploymentIncludeProfiling>
+    <DeploymentEnableWebDeploy>False</DeploymentEnableWebDeploy>
+    <DeploymentStorageService>cyclecyclecycle</DeploymentStorageService>
+    <DeploymentStorageServiceLabel>cyclecyclecycle</DeploymentStorageServiceLabel>
+    <DeploymentLabel>CycleCycleCycle.Azure</DeploymentLabel>
+    <PublishSolutionConfiguration>Release</PublishSolutionConfiguration>
+    <PublishProfile>Default</PublishProfile>
+    <TimestampLabel>True</TimestampLabel>
   </PropertyGroup>
 </Project>
