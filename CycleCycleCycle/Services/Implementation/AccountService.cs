@@ -23,6 +23,11 @@ namespace CycleCycleCycle.Services.Implementation
             return _accountRepository.All.Where(a => a.Username == username).FirstOrDefault();
         }
 
+        public Account Find(int id)
+        {
+            return _accountRepository.Find(id);
+        }
+
         public Account Create(string username)
         {
             Account account = new Account {Username = username};

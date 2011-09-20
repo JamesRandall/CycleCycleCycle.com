@@ -41,5 +41,7 @@ namespace CycleCycleCycle.Controllers
                 _searchedForAccount = true;
             }
         }
+
+        protected IAccountService AccountService { get { return _accountService; } }
     }
 }

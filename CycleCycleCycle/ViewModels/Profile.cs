@@ -20,6 +20,10 @@ namespace CycleCycleCycle.ViewModels
 
         public IEnumerable<RouteSummary> Uploads { get; set; }
 
-        public IEnumerable<Ride> Rides { get; set; } 
+        public IEnumerable<Ride> Rides { get; set; }
+
+        public bool IsOwnProfile { get; set; }
+
+        public string Username { get; set; }
     }
 }

@@ -36,7 +36,7 @@
 			    @String.Format("{0:g}", item.DateCreated)
             </td>
             <td>
-			    @item.CreatedBy
+			    @Html.ActionLink(item.CreatedBy, "Index", "Profile", new {id=item.CreatedBy}, new {})
             </td>
         </tr>
     }

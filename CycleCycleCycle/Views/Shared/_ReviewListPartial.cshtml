@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <td>Reviewed by</td>
-            <td>@review.Account.Username</td>
+            <td>@Html.ActionLink(review.Account.Username, "Index", "Profile", new {id=review.Account.Username}, new {})</td>
         </tr>
         @if (!String.IsNullOrEmpty(review.Review))
         {

@@ -8,6 +8,7 @@ using CycleCycleCycle.Controllers;
 using CycleCycleCycle.Models;
 using CycleCycleCycle.Models.Repositories;
 using CycleCycleCycle.Services;
+using CycleCycleCycle.ViewModels;
 using CycleCycleCycle.ViewModels.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
@@ -47,11 +48,12 @@ namespace CycleCycleCycle.Tests.Controllers
                                      };
 
             // Act
-            ViewResult result = (ViewResult) controller.Index();
+            ViewResult result = (ViewResult) controller.Index(null);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Model);
+            Assert.IsTrue(((Profile)result.Model).IsOwnProfile);
         }
     }
 }

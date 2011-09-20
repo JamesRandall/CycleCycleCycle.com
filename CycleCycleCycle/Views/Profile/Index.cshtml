@@ -70,6 +70,10 @@
         });
     })
 </script>
+@if (!Model.IsOwnProfile)
+{
+    <h3>Profile for @Model.Username</h3>
+}
 <div class="row">
     <div class="span4">Total Distance Cycled</div>
     <div class="span12">@Html.LongDistance(Model.TotalDistanceCycled)</div>
@@ -84,10 +88,22 @@
 </div>
 <div class="breaker"></div>
 <ul class="tabs">
-    <li class="active" id="favouritesTab"><a href="#">Your Favourites</a></li>
-    <li id="reviewsTab"><a href="#">Your Reviews</a></li>
-    <li id="uploadsTab"><a href="#">Your Uploads</a></li>
-    <li id="ridesTab"><a href="#">Your Rides</a></li>
+    <li class="active" id="favouritesTab"><a href="#">@if (Model.IsOwnProfile)
+                                                      {
+                                                          @:Your 
+                                                      }Favourites</a></li>
+    <li id="reviewsTab"><a href="#">@if (Model.IsOwnProfile)
+                                                      {
+                                                          @:Your 
+                                                      }Reviews</a></li>
+    <li id="uploadsTab"><a href="#">@if (Model.IsOwnProfile)
+                                                      {
+                                                          @:Your 
+                                                      }Uploads</a></li>
+    <li id="ridesTab"><a href="#">@if (Model.IsOwnProfile)
+                                                      {
+                                                          @:Your 
+                                                      }Rides</a></li>
 </ul>
 <div id="favouritesPage">
     @if (Model.Favourites != null && Model.Favourites.Count() > 0)
