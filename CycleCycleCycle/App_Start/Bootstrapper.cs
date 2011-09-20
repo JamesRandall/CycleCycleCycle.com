@@ -44,7 +44,7 @@ namespace CycleCycleCycle.App_Start
 
             // utilities
             container.RegisterType<IDistanceCalculator, HaversineDistanceCalculator>();
-            container.RegisterType<IHeightMapImageBuilder, HeightMapImageBuilder>();
+            container.RegisterType<IHeightMapImageBuilder, TimeBasedHeightMapImageBuilder>();
             container.RegisterType<IHeightMapImageCache, HeightMapImageCache>();
             container.RegisterType<IRouteCreator, GpxRouteCreator>();
             container.RegisterType<IRouteFileCreator, GpxRouteFileCreator>();

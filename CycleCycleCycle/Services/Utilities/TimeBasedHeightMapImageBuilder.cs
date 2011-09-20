@@ -8,7 +8,7 @@ using CycleCycleCycle.Services.Implementation;
 
 namespace CycleCycleCycle.Services.Utilities
 {
-    public class HeightMapImageBuilder : IHeightMapImageBuilder
+    public class TimeBasedHeightMapImageBuilder : IHeightMapImageBuilder
     {
         public Bitmap HeightMapImage(Route route, int width, int height)
         {

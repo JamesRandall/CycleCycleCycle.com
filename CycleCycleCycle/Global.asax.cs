@@ -43,6 +43,8 @@ namespace CycleCycleCycle
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            WebRoleEntryPoint.SetConfigurationSettingPublisher();
         }
     }
 }
