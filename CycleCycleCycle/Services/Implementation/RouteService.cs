@@ -24,7 +24,7 @@ namespace CycleCycleCycle.Services.Implementation
         private readonly IRouteCreator _routeCreator;
         private readonly IHeightMapImageBuilder _heightMapImageBuilder;
         private readonly IHeightMapImageCache _heightMapImageCache;
-        private readonly IGeocodeService _geocodeService;
+        private readonly IGeographicRouteLocator _geographicRouteLocator;
         private readonly IRouteToRouteResultMapper _routeToRouteResultMapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISortSecurity _sortSecurity;
@@ -36,7 +36,7 @@ namespace CycleCycleCycle.Services.Implementation
         public RouteService(IRouteCreator routeCreator,
             IHeightMapImageBuilder heightMapImageBuilder,
             IHeightMapImageCache heightMapImageCache,
-            IGeocodeService geocodeService,
+            IGeographicRouteLocator geographicRouteLocator,
             IRouteToRouteResultMapper routeToRouteResultMapper,
             IUnitOfWork unitOfWork,
             ISortSecurity sortSecurity,
@@ -48,7 +48,7 @@ namespace CycleCycleCycle.Services.Implementation
             _routeCreator = routeCreator;
             _heightMapImageBuilder = heightMapImageBuilder;
             _heightMapImageCache = heightMapImageCache;
-            _geocodeService = geocodeService;
+            _geographicRouteLocator = geographicRouteLocator;
             _routeToRouteResultMapper = routeToRouteResultMapper;
             _unitOfWork = unitOfWork;
             _sortSecurity = sortSecurity;
@@ -114,71 +114,24 @@ namespace CycleCycleCycle.Services.Implementation
         {
             try
             {
-                Location location = _geocodeService.Geocode(searchString);
-                searchedLocation = location.Name;
-                const double R = 6367; 
-                const double RAD = Math.PI / 180;
-                Func<double, double, double, double, double> dist =
-                    (lat1, lon1, lat2, lon2) =>
-                    R*2*
-                    (
-                        Math.Asin(Math.Min(1, Math.Sqrt(
-                            (
-                                Math.Pow(Math.Sin(((lat1*RAD - lat2*RAD))/2.0), 2.0) +
-                                Math.Cos(lat1*RAD)*Math.Cos(lat2*RAD)*
-                                Math.Pow(Math.Sin(((lon1*RAD - lon2*RAD))/2.0), 2.0)
-                            )
-                                                  )))
-                    );
-
-                List<RouteSummary> routes = _routeRepository.All.Where(
-                    r => R*2*
-                         (
-                             SqlFunctions.Asin(SqlFunctions.SquareRoot(
-                                 (
-                                     Math.Pow(
-                                         SqlFunctions.Sin(((location.Latitude*RAD -
-                                                            r.RoutePoints.FirstOrDefault().Latitude*RAD))/2.0).Value,
-                                         2.0) +
-                                     SqlFunctions.Cos(location.Latitude*RAD).Value*
-                                     SqlFunctions.Cos(r.RoutePoints.FirstOrDefault().Latitude*RAD).Value*
-                                     Math.Pow(
-                                         SqlFunctions.Sin(((location.Longitude*RAD -
-                                                            r.RoutePoints.FirstOrDefault().Longitude*RAD))/2.0).Value,
-                                         2.0)
-                                 )
-                                                   ))
-                         ) <= distanceFromStart)
-                    .Select(r => new RouteSummary
-                                     {
-                                         CreatedBy = r.Account == null ? "" : r.Account.Username,
-                                         Name = r.Name,
-                                         RouteID = r.RouteID,
-                                         DistanceFromStart = (R*2*
-                                                              (
-                                                                  SqlFunctions.Asin(SqlFunctions.SquareRoot(
-                                                                      (
-                                                                          Math.Pow(
-                                                                              SqlFunctions.Sin(((location.Latitude*RAD -
-                                                                                                 r.RoutePoints.
-                                                                                                     FirstOrDefault().
-                                                                                                     Latitude*RAD))/2.0)
-                                                                                  .Value, 2.0) +
-                                                                          SqlFunctions.Cos(location.Latitude*RAD).Value*
-                                                                          SqlFunctions.Cos(
-                                                                              r.RoutePoints.FirstOrDefault().Latitude*
-                                                                              RAD).Value*
-                                                                          Math.Pow(
-                                                                              SqlFunctions.Sin(((location.Longitude*RAD -
-                                                                                                 r.RoutePoints.
-                                                                                                     FirstOrDefault().
-                                                                                                     Longitude*RAD))/2.0)
-                                                                                  .Value, 2.0)
-                                                                      )
-                                                                                        ))
-                                                              )).Value * 1000
-                                     }).ToList();
-
+                List<RouteSummary> routes;
+                if (String.IsNullOrEmpty(searchString) || searchString.Trim().Length == 0)
+                {
+                    searchedLocation = "";
+                    routes = _routeRepository.All.OrderByDescending(r => r.DateCreated).Select(r =>
+                        new RouteSummary()
+                            {
+                                CreatedBy = r.Account == null ? "" : r.Account.Username,
+                                DateCreated = r.DateCreated,
+                                Name = r.Name,
+                                RouteID = r.RouteID,
+                                DistanceFromStart = 0
+                            }).ToList();
+                }
+                else
+                {
+                    routes = _geographicRouteLocator.FindRoute(searchString, distanceFromStart, out searchedLocation);
+                }
                 return routes;
             }
             catch (Exception ex)
@@ -186,6 +139,8 @@ namespace CycleCycleCycle.Services.Implementation
                 throw new ServiceException("Error occurred finding routes", ex);
             }
         }
+
+        
 
         public Route Details(int routeId)
         {

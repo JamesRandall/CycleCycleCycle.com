@@ -49,6 +49,7 @@ namespace CycleCycleCycle.App_Start
             container.RegisterType<IRouteCreator, GpxRouteCreator>();
             container.RegisterType<IRouteFileCreator, GpxRouteFileCreator>();
             container.RegisterType<ISortSecurity, SortSecurity>();
+            container.RegisterType<IGeographicRouteLocator, GeographicRouteLocator>();
 
             // type mappers
             container.RegisterType<IRouteToRouteResultMapper, RouteToRouteResultMapper>();
